@@ -4,9 +4,13 @@ using API.Helpers.Errors;
 using AutoMapper;
 using Dominio.Entities;
 using Dominio.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
+[ApiVersion("1.0")]
+[ApiVersion("1.1")]
+/* [Authorize] */
 
 public class PersonaController : BaseApiController
 {
@@ -36,6 +40,77 @@ public class PersonaController : BaseApiController
         var entidad = await unitofwork.Personas.GetAllAsync(paisParams.PageIndex, paisParams.PageSize, paisParams.Search);
         var listEntidad = mapper.Map<List<object>>(entidad.registros);
         return new Pager<object>(listEntidad, entidad.totalRegistros, paisParams.PageIndex, paisParams.PageSize, paisParams.Search);
+    }
+    
+    [HttpGet("Consulta1")]
+    [MapToApiVersion("1.1")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<PersonaDto>>> RetornarEmpleados()
+    {
+        var entidad = await unitofwork.Personas.RetornarEmpleados();
+        return mapper.Map<List<PersonaDto>>(entidad);
+    }
+    
+    [HttpGet("Consulta2")]
+    [MapToApiVersion("1.1")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<PersonaDto>>> RetornarEmpleadosQueSonVigilantes()
+    {
+        var entidad = await unitofwork.Personas.RetornarEmpleadosQueSonVigilantes();
+        return mapper.Map<List<PersonaDto>>(entidad);
+    }
+
+    [HttpGet("Consulta3{documento}")]
+    [MapToApiVersion("1.1")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<PersonaDto>>> RetornarTelefonosDeVigilante(string documento)
+    {
+        var entidad = await unitofwork.Personas.RetornarTelefonosDeVigilante(documento);
+        return mapper.Map<List<PersonaDto>>(entidad);
+    }
+
+
+    [HttpGet("Consulta4")]
+    [MapToApiVersion("1.1")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<PersonaDto>>> ClientesQueVivenEnBucaramanga()
+    {
+        var entidad = await unitofwork.Personas.ClientesQueVivenEnBucaramanga();
+        return mapper.Map<List<PersonaDto>>(entidad);
+    }
+    
+    [HttpGet("Consulta5")]
+    [MapToApiVersion("1.1")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<PersonaDto>>> RetornarEmpleadosDeGironOPiedecuesta()
+    {
+        var entidad = await unitofwork.Personas.RetornarEmpleadosDeGironOPiedecuesta();
+        return mapper.Map<List<PersonaDto>>(entidad);
+    }
+    
+    [HttpGet("Consulta6")]
+    [MapToApiVersion("1.1")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<PersonaDto>>> ClientesConMasDe5AñosAntiguedad()
+    {
+        var entidad = await unitofwork.Personas.ClientesConMasDe5AñosAntiguedad();
+        return mapper.Map<List<PersonaDto>>(entidad);
+    }
+    
+    [HttpGet("Consulta7")]
+    [MapToApiVersion("1.1")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<PersonaDto>>> ContratosActivosConClienteYEmpleado()
+    {
+        var entidad = await unitofwork.Personas.ContratosActivosConClienteYEmpleado();
+        return mapper.Map<List<PersonaDto>>(entidad);
     }
 
     [HttpGet("{id}")]

@@ -78,6 +78,9 @@ namespace Persistencia.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Descripcion")
+                        .IsUnique();
+
                     b.HasIndex("IdContactoFK");
 
                     b.HasIndex("IdPersonaFK");
@@ -225,11 +228,14 @@ namespace Persistencia.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("IdentificacionPersona")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar")
+                        .HasColumnName("IdentificacionPersona");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasMaxLength(250)
+                        .HasMaxLength(120)
                         .HasColumnType("varchar")
                         .HasColumnName("Nombre");
 
@@ -240,6 +246,9 @@ namespace Persistencia.Data.Migrations
                     b.HasIndex("IdCiudad");
 
                     b.HasIndex("IdTPersonaFK");
+
+                    b.HasIndex("IdentificacionPersona")
+                        .IsUnique();
 
                     b.ToTable("Persona", (string)null);
                 });

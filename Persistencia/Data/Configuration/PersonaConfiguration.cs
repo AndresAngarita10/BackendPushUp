@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistencia.Data.Configuration;
-    public class PersonaConfiguration : IEntityTypeConfiguration<Persona>
+public class PersonaConfiguration : IEntityTypeConfiguration<Persona>
 {
     public void Configure(EntityTypeBuilder<Persona> builder)
     {
@@ -16,11 +16,19 @@ namespace Persistencia.Data.Configuration;
         builder.HasKey(d => d.Id);
         builder.Property(d => d.Id);
 
+        builder.Property(d => d.IdentificacionPersona)
+        .HasColumnName("IdentificacionPersona")
+        .HasColumnType("varchar")
+        .IsRequired()
+        .HasMaxLength(20);
+
+        builder.HasIndex(d => d.IdentificacionPersona).IsUnique();
+
         builder.Property(d => d.Nombre)
         .HasColumnName("Nombre")
         .HasColumnType("varchar")
         .IsRequired()
-        .HasMaxLength(250);
+        .HasMaxLength(120);
 
         builder.Property(d => d.FechaRegistro)
         .HasColumnName("FechaRegistro")

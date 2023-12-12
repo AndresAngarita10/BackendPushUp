@@ -11,7 +11,7 @@ using Persistencia;
 namespace Persistencia.Data.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20231212001447_InitialCreate2")]
+    [Migration("20231212024456_InitialCreate2")]
     partial class InitialCreate2
     {
         /// <inheritdoc />
@@ -80,6 +80,9 @@ namespace Persistencia.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Descripcion")
+                        .IsUnique();
 
                     b.HasIndex("IdContactoFK");
 
@@ -228,11 +231,14 @@ namespace Persistencia.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("IdentificacionPersona")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar")
+                        .HasColumnName("IdentificacionPersona");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasMaxLength(250)
+                        .HasMaxLength(120)
                         .HasColumnType("varchar")
                         .HasColumnName("Nombre");
 
@@ -243,6 +249,9 @@ namespace Persistencia.Data.Migrations
                     b.HasIndex("IdCiudad");
 
                     b.HasIndex("IdTPersonaFK");
+
+                    b.HasIndex("IdentificacionPersona")
+                        .IsUnique();
 
                     b.ToTable("Persona", (string)null);
                 });

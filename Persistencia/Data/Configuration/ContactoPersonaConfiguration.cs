@@ -21,6 +21,9 @@ public class ContactoPersonaConfiguration : IEntityTypeConfiguration<ContactoPer
         .IsRequired()
         .HasMaxLength(250);
 
+        builder.HasIndex(d => d.Descripcion).IsUnique();
+
+
         builder.HasOne(d => d.Persona)
         .WithMany(d => d.ContactoPersonas)
         .HasForeignKey(d => d.IdPersonaFK);
